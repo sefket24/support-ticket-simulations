@@ -20,42 +20,42 @@ TICKETS = {
             "get any email explaining it."
         ),
         "support_response": [
-            "Thanks for reaching out, and I'm sorry for the confusion around this "
-            "charge. I completely understand why two transactions in the same month "
-            "would be alarming.",
-            "What most likely happened here is that your billing date shifted when a "
-            "payment method was updated or a plan change was attempted—even if it "
-            "wasn't completed. This can occasionally cause a prorated charge to "
-            "appear alongside your regular renewal. I've flagged your account for "
-            "review so I can confirm exactly what triggered the second transaction.",
-            "Once confirmed, if the charge is a duplicate we'll issue a full refund "
-            "within 5–7 business days and make sure your billing cycle is reset "
-            "correctly. I'll follow up by email as soon as the review is complete—"
-            "usually within one business day.",
+            "Thanks for flagging this — I can see why two charges in the same month "
+            "would feel off, especially without any explanation.",
+            "I'm going to review your billing timeline to confirm exactly what "
+            "triggered the second charge. In cases like this, it's usually tied to "
+            "a mid-cycle change (like a payment update or plan adjustment) that "
+            "generates a prorated invoice alongside the regular renewal — but I'll "
+            "verify that against your account activity.",
+            "If this turns out to be a duplicate or unintended charge, I'll get a "
+            "refund issued right away and make sure your billing cycle is corrected "
+            "so it doesn't happen again. I'll follow up within one business day "
+            "with a clear breakdown of what happened.",
+            "Just to double check — have there been any recent changes to your "
+            "payment method or plan on your end?",
         ],
         "internal_notes": {
             "root_cause": (
-                "Suspected mid-cycle plan interaction or payment method update that "
-                "triggered a prorated invoice alongside the standard renewal. "
-                "Duplicate charges at this cadence are often caused by a failed "
-                "payment retry that eventually succeeds after the next cycle runs."
+                "Most likely a mid-cycle billing event (payment method update or "
+                "attempted plan change) generating a prorated invoice. Less likely: "
+                "delayed payment retry overlapping with renewal cycle."
             ),
             "checking": (
-                "Pulling subscription event log for the account. Looking for any "
-                "plan change events, payment retries, or coupon/promo application "
-                "between the two charge dates. Cross-referencing with Stripe "
-                "payment history."
+                "Review subscription event log for: plan change attempts, payment "
+                "method updates, retry logic between charge dates. "
+                "Cross-check with Stripe charges to confirm whether this is a "
+                "valid proration, duplicate charge, or retry artifact."
             ),
             "escalation": (
-                "Not escalating at this stage. Billing team can resolve with "
-                "read-only access to the event log. Will escalate to engineering "
-                "only if the log shows no matching event—which would suggest a "
-                "platform-level billing bug."
+                "No escalation yet. Billing logs should confirm cause. Escalate to "
+                "engineering only if no corresponding event is found (potential "
+                "billing system inconsistency)."
             ),
             "product_gap": (
-                "Customers currently receive no proactive email when a mid-cycle "
-                "charge is generated. A transactional email explaining the reason "
-                "would reduce inbound confusion significantly."
+                "No proactive communication for mid-cycle charges. This creates "
+                "avoidable confusion. Recommend adding a transactional email "
+                "explaining why the charge occurred and how it affects the "
+                "billing cycle."
             ),
         },
     },
