@@ -2,9 +2,9 @@ name: Keep Alive
 on:
   schedule:
       - cron: '*/15 * * * *'
-        workflow_dispatch:
-        jobs:
-          ping:
+        rkflow_dispatch:
+    jobs:
+          :
               runs-on: ubuntu-latest
                   steps:
                         - name: Ping Streamlit App
