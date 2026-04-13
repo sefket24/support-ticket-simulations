@@ -27,18 +27,17 @@ TICKETS = {
             "a mid-cycle change (like a payment update or plan adjustment) that "
             "generates a prorated invoice alongside the regular renewal — but I'll "
             "verify that against your account activity.",
-            "If this turns out to be a duplicate or unintended charge, I'll get a "
-            "refund issued right away and make sure your billing cycle is corrected "
-            "so it doesn't happen again. I'll follow up within one business day "
-            "with a clear breakdown of what happened.",
             "Just to double check — have there been any recent changes to your "
             "payment method or plan on your end?",
+            "If this is a duplicate or unintended charge, I'll issue a refund right "
+            "away and make sure your billing cycle is corrected so it doesn't happen "
+            "again. I'll follow up within one business day with a clear breakdown "
+            "of what happened.",
         ],
         "internal_notes": {
             "root_cause": (
                 "Most likely a mid-cycle billing event (payment method update or "
-                "attempted plan change) generating a prorated invoice. Less likely: "
-                "delayed payment retry overlapping with renewal cycle."
+                "attempted plan change) given the timing between charges."
             ),
             "checking": (
                 "Review subscription event log for: plan change attempts, payment "
@@ -71,24 +70,22 @@ TICKETS = {
         ),
         "support_response": [
             "Thanks for laying all of that out — and for trying those steps already. "
-            "I know this is blocking your team, so I'm going to take a closer look "
-            "from our side.",
+            "I know this is blocking your team, so I'm going to check this from our "
+            "side so we can pinpoint what's blocking access.",
             "What you're seeing — being able to view the library but not access it — "
-            "usually points to a permissions mismatch where access didn't fully apply "
-            "to some members. I'll verify that directly against the library's access "
-            "settings and your team roster.",
+            "usually points to access not fully applying to some members. I'll verify "
+            "that directly against the library's access settings and your team roster.",
             "Could you share the library link and one or two affected user emails? "
-            "That's enough for me to trace what's happening.",
+            "That's enough for me to trace this quickly.",
             "In the meantime, I'd avoid duplicating the library since that can create "
             "version inconsistencies. If this is a permissions sync issue, we should "
             "be able to resolve it without needing a workaround.",
-            "I'll follow up as soon as I've confirmed what's causing the access gap.",
+            "I'll follow up as soon as I've confirmed the cause and next steps.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Most likely permission propagation failure where UI reflects "
-                "membership but ACL did not update correctly, especially given "
-                "partial impact across users."
+                "Most likely permission propagation failure given partial impact "
+                "across users (not a full outage)."
             ),
             "checking": (
                 "Library ID + affected user IDs. "
@@ -118,27 +115,25 @@ TICKETS = {
             "and this is really stressful."
         ),
         "support_response": [
-            "I hear you—this is a frustrating situation, especially with a deadline "
-            "in play. Let's get this resolved as quickly as possible.",
-            "When published component changes aren't reflected for other editors, "
-            "it's usually a sync cache issue on their end or a publish that "
-            "technically completed but didn't propagate to all connected files. "
-            "One thing worth checking: in the affected files on your teammates' "
-            "end, go to the Libraries panel and look for an 'Update available' "
-            "prompt. Even after a hard reload, library updates sometimes need to "
-            "be accepted explicitly from within the subscriber file.",
-            "If the update prompt isn't appearing, that points to a propagation "
-            "failure on our side. Please share the main file link and one affected "
-            "subscriber file link so I can check the publish event log and confirm "
-            "the update was registered correctly.",
+            "I can see why this is stressful, especially with a deadline — "
+            "let's get this unblocked.",
+            "When published component changes don't show up for other editors, "
+            "it's usually one of two things: the update hasn't been applied in "
+            "their file yet, or the publish didn't fully propagate.",
+            "In the affected files, ask your teammates to open the Libraries panel "
+            "and check for an 'Update available' prompt. Even after a hard reload, "
+            "updates sometimes need to be accepted from within the file.",
+            "If there's no update prompt showing, that likely means the publish "
+            "didn't propagate correctly on our side. Please share the main file "
+            "link and one affected subscriber file so I can check the publish event "
+            "log and confirm the update registered properly.",
+            "I'll prioritize this given the deadline and follow up as soon as I've "
+            "confirmed what's happening.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Two probable causes: (1) the publish completed client-side but "
-                "failed to register on the server, leaving subscriber files "
-                "unaware of the new version; or (2) the publish succeeded but "
-                "cache invalidation didn't propagate within the expected TTL. "
-                "A 24-hour lag points more strongly to a server-side event failure."
+                "Most likely a publish propagation failure; secondary possibility "
+                "is cache invalidation delay."
             ),
             "checking": (
                 "Need the main file and one subscriber file to pull publish event "
