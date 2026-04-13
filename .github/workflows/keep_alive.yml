@@ -3,11 +3,11 @@ name: Keep Alive
 on:
   schedule:
       - cron: '*/15 * * * *'
-        workflow_dispatch:
+    workflow_dispatch:
 
-        jobs:
-          ping:
-              runs-on: ubuntu-latest
-                  steps:
-                        - name: Ping Streamlit App
-                                run: curl -s -o /dev/null -w "%{http_code}" https://support-ticket-simulations.streamlit.app/
+jobs:
+  ping:
+      runs-on: ubuntu-latest
+          steps:
+                - name: Ping Streamlit App
+                        run: curl -s -o /dev/null -w "%{http_code}" https://support-ticket-simulations.streamlit.app/
