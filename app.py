@@ -70,42 +70,40 @@ TICKETS = {
             "browsers. Nothing works. This is blocking us from starting a project."
         ),
         "support_response": [
-            "Thanks for the detailed rundown—that kind of systematic troubleshooting "
-            "on your end actually helps a lot and rules out the most common fixes.",
-            "The symptom you're describing—library visible but inaccessible—is "
-            "usually caused by a permissions state mismatch between the team roster "
-            "and the library's access control list. This can happen when members "
-            "are added while the library is in a transitional state (e.g., during "
-            "a plan upgrade or org restructure).",
-            "I'd like you to share the affected library's URL and the email addresses "
-            "of two or three blocked users so I can inspect the permission records "
-            "directly. In the meantime, a temporary workaround is to duplicate the "
-            "library and share the copy fresh—it won't carry the broken permissions.",
+            "Thanks for laying all of that out — and for trying those steps already. "
+            "I know this is blocking your team, so I'm going to take a closer look "
+            "from our side.",
+            "What you're seeing — being able to view the library but not access it — "
+            "usually points to a permissions mismatch where access didn't fully apply "
+            "to some members. I'll verify that directly against the library's access "
+            "settings and your team roster.",
+            "Could you share the library link and one or two affected user emails? "
+            "That's enough for me to trace what's happening.",
+            "In the meantime, I'd avoid duplicating the library since that can create "
+            "version inconsistencies. If this is a permissions sync issue, we should "
+            "be able to resolve it without needing a workaround.",
+            "I'll follow up as soon as I've confirmed what's causing the access gap.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Likely a permission propagation failure. Members show as added in "
-                "the UI but the ACL (access control list) on the library resource "
-                "was not updated server-side. Can happen after bulk-adds or during "
-                "plan-tier changes that temporarily lock library records."
+                "Most likely permission propagation failure where UI reflects "
+                "membership but ACL did not update correctly, especially given "
+                "partial impact across users."
             ),
             "checking": (
-                "Need the library ID and affected user IDs to query the permissions "
-                "table directly. Will check for any recent org-level changes "
-                "(seat additions, plan upgrades) that correlate with the onset of "
-                "the issue. Also checking for any known incidents flagged in the "
-                "past two weeks."
+                "Library ID + affected user IDs. "
+                "Permissions table vs UI state. "
+                "Recent org-level changes (bulk adds, plan updates). "
+                "Any related incidents in the same timeframe."
             ),
             "escalation": (
-                "Will escalate to Tier 2 / platform engineering if the permissions "
-                "table shows the users as correctly added but the library still "
-                "denies access. That gap would indicate a caching or auth token "
-                "issue that requires a backend fix."
+                "Escalate to engineering if users are correctly present in ACL but "
+                "access is denied — likely caching or auth inconsistency."
             ),
             "product_gap": (
-                "Bulk-add workflows don't include a confirmation state that verifies "
-                "ACL propagation succeeded. A lightweight async check after bulk "
-                "adds would catch this class of failure before users are blocked."
+                "No validation step after bulk member adds to confirm ACL "
+                "propagation. Adding a post-action verification would prevent "
+                "partial access states."
             ),
         },
     },
