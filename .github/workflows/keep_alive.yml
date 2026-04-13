@@ -7,6 +7,5 @@ on:
           ping:
               runs-on: ubuntu-latest
                   steps:
-                        - name: Ping
-                                run: curl -s https://support-ticket-simulations.streamlit.app/
-                                
+                        - run: curl https://support-ticket-simulations.streamlit.app/
+                        
