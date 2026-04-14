@@ -45,21 +45,36 @@ st.markdown("""
         opacity: 0.9;
     }
     
-    /* Fix Expanders (Internal Notes) */
+    /* Completely Fix Expanders (Internal Notes) */
     [data-testid="stExpander"] {
         background-color: var(--bg-card) !important;
         border: 1px solid var(--border) !important;
         border-radius: 12px !important;
         margin-top: 10px !important;
     }
-    [data-testid="stExpander"] summary {
+    
+    /* Target the clickable header part specifically */
+    [data-testid="stExpander"] details summary {
+        background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
-        font-weight: 600 !important;
+        border-radius: 12px 12px 0 0 !important;
+        padding: 0.5rem 1rem !important;
     }
+    
+    /* Remove default hover highlights that turn white */
+    [data-testid="stExpander"] details summary:hover {
+        background-color: var(--bg-main) !important;
+        color: var(--accent) !important;
+    }
+
     [data-testid="stExpander"] [data-testid="stVerticalBlock"] {
+        background-color: var(--bg-card) !important;
         padding: 1rem !important;
+        border-radius: 0 0 12px 12px !important;
     }
-    [data-testid="stExpander"] p, [data-testid="stExpander"] span {
+    
+    /* Ensure all text inside the expander is primary color */
+    [data-testid="stExpander"] * {
         color: var(--text-primary) !important;
     }
 
