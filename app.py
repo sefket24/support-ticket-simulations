@@ -4,8 +4,51 @@ import streamlit as st
 st.set_page_config(
     page_title="Support Ticket Simulations",
     page_icon="🎫",
-    layout="wide",
+    layout="centered",
 )
+
+# --- STYLING ---
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap');
+
+    :root {
+        --text-primary: #f7f9f9;
+        --text-secondary: #8b98a5;
+        --bg-main: #15202b;
+        --bg-card: #1e2732;
+        --accent: #1d9bf0;
+        --border: #38444d;
+    }
+
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+    }
+
+    /* Custom Header */
+    .candidate-header { border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; }
+    .candidate-name { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+    .candidate-title { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+    .contact-links { font-size: 11px; color: #ffffff; display: flex; gap: 12px; margin-top: 4px; }
+    .contact-links a { 
+        color: #ffffff; 
+        text-decoration: none; 
+        border-bottom: 1px solid rgba(255,255,255,0.3); 
+        padding-bottom: 1px;
+        transition: all 0.2s ease;
+    }
+    .contact-links a:hover { 
+        color: var(--accent); 
+        border-bottom-color: var(--accent);
+        opacity: 0.9;
+    }
+    
+    /* Hide Streamlit components */
+    #MainMenu, footer, header, [data-testid="stHeader"] { visibility: hidden; display: none; }
+</style>
+""", unsafe_allow_html=True)
 
 # ── Static ticket data ────────────────────────────────────────────────────────
 TICKETS = {
@@ -173,6 +216,19 @@ with st.sidebar:
 # ── Main panel ────────────────────────────────────────────────────────────────
 ticket = TICKETS[selected]
 
+# Candidate Header
+st.markdown(f"""
+<div class="candidate-header">
+    <div class="candidate-name">Sefket Nouri</div>
+    <div class="candidate-title">Figma Product Support Specialist candidate</div>
+    <div class="contact-links">
+        <a href="mailto:me@sefketnouri.com">me@sefketnouri.com</a>
+        <a href="https://www.linkedin.com/in/sefketnouri/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/sefket24" target="_blank">GitHub</a>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 st.title("Support Ticket Simulations")
 st.caption(
     "A portfolio artifact showing how a support specialist works through "
@@ -186,13 +242,14 @@ st.subheader("1. Customer Message")
 st.markdown(
     f"""
     <div style="
-        background-color: #f7f7f7;
-        border-left: 3px solid #d0d0d0;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
         padding: 16px 20px;
-        border-radius: 4px;
+        border-radius: 12px;
         font-size: 0.95rem;
         line-height: 1.65;
-        color: #333;
+        color: var(--text-primary);
     ">
         {ticket["customer_message"]}
     </div>
