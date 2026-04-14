@@ -52,151 +52,113 @@ st.markdown("""
 
 # ── Static ticket data ────────────────────────────────────────────────────────
 TICKETS = {
-    "Billing Issue": {
-        "label": "💳  Billing Issue",
+    "Seat Management & Billing": {
+        "label": "💳  Seat Management & Billing",
         "customer_message": (
-            "Hi – I just got charged twice for my subscription this month. "
-            "Once on the 1st and again on the 14th. I didn't change my plan or "
-            "anything like that. I've been a paying customer for over a year and "
-            "this has never happened before. Can you please look into this and "
-            "refund the extra charge? I'm a little frustrated because I didn't "
-            "get any email explaining it."
+            "Hey, I just noticed an extra charge on our team account. We're on a "
+            "Professional plan and I'm the only admin, but there's a second $15 charge "
+            "on the 12th. I didn't add anyone new. Can you explain why we're being billed twice?"
         ),
         "support_response": [
-            "Thanks for flagging this — I can see why two charges in the same month "
-            "would feel off, especially without any explanation.",
-            "I'm going to review your billing timeline to confirm exactly what "
-            "triggered the second charge. In cases like this, it's usually tied to "
-            "a mid-cycle change (like a payment update or plan adjustment) that "
-            "generates a prorated invoice alongside the regular renewal — but I'll "
-            "verify that against your account activity.",
-            "Just to double check — have there been any recent changes to your "
-            "payment method or plan on your end?",
-            "If this is a duplicate or unintended charge, I'll issue a refund right "
-            "away and make sure your billing cycle is corrected so it doesn't happen "
-            "again. I'll follow up within one business day with a clear breakdown "
-            "of what happened.",
+            "It looks like that second charge was triggered by a seat upgrade mid-cycle. "
+            "In Figma, adding a new editor (or a viewer taking an action that requires "
+            "a full seat) generates a pro-rated invoice for the remainder of the billing period.",
+            "I'll check the 'Members' tab in your team settings to see exactly which user "
+            "was upgraded and when. If this upgrade was accidental—like a viewer being invited "
+            "to a file with 'Can Edit' permissions—we can revert the seat and I’ll help "
+            "with a credit for the unutilized time.",
+            "If that user definitely needs edit access, this invoice covers them until your "
+            "next regular renewal date.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Most likely a mid-cycle billing event (payment method update or "
-                "attempted plan change) given the timing between charges."
+                "Mid-month seat upgrade triggered by an invitation or permission change."
             ),
             "checking": (
-                "Review subscription event log for: plan change attempts, payment "
-                "method updates, retry logic between charge dates. "
-                "Cross-check with Stripe charges to confirm whether this is a "
-                "valid proration, duplicate charge, or retry artifact."
+                "Access logs for the 'Professional' team. Identifying which 'Viewer' "
+                "was promoted to 'Editor' and cross-referencing with the Stripe invoice ID."
             ),
             "escalation": (
-                "No escalation yet. Billing logs should confirm cause. Escalate to "
-                "engineering only if no corresponding event is found (potential "
-                "billing system inconsistency)."
+                "Not required. Simple seat audit and potential refund/credit."
             ),
             "product_gap": (
-                "No proactive communication for mid-cycle charges. This creates "
-                "avoidable confusion. Recommend adding a transactional email "
-                "explaining why the charge occurred and how it affects the "
-                "billing cycle."
+                "The 'Invite' flow doesn't clearly show that 'Can Edit' in a professional "
+                "team creates an immediate billable seat. A warning modal would reduce "
+                "billing friction here."
             ),
         },
     },
-    "Permissions Issue": {
-        "label": "🔒  Permissions Issue",
+    "Permissions & Libraries": {
+        "label": "🔒  Permissions & Libraries",
         "customer_message": (
-            "Hey, we're having a really annoying problem. Our whole design team "
-            "got added to a shared library two weeks ago but half of them still "
-            "can't access the files. They can see the library listed but when they "
-            "click into it they get an error that says they don't have permission. "
-            "We've tried removing and re-adding them, logging out, even switching "
-            "browsers. Nothing works. This is blocking us from starting a project."
+            "Our developers are invited to the project but they can't see the 'Core UI' "
+            "library in their assets panel. I've definitely published it and they have "
+            "'Can View' access. What are we missing? They used to see it fine last week."
         ),
         "support_response": [
-            "Thanks for laying all of that out — and for trying those steps already. "
-            "I know this is blocking your team, so I'm going to check this from our "
-            "side so we can pinpoint what's blocking access.",
-            "What you're seeing — being able to view the library but not access it — "
-            "usually points to access not fully applying to some members. I'll verify "
-            "that directly against the library's access settings and your team roster.",
-            "Could you share the library link and one or two affected user emails? "
-            "That's enough for me to trace this quickly.",
-            "In the meantime, I'd avoid duplicating the library since that can create "
-            "version inconsistencies. If this is a permissions sync issue, we should "
-            "be able to resolve it without needing a workaround.",
-            "I'll follow up as soon as I've confirmed the cause and next steps.",
+            "If your developers can see the project files but not the library itself, "
+            "it’s likely because library visibility is managed separately from file "
+            "permissions. Even if they can 'View' the file, it won't appear in their "
+            "Assets panel unless it's explicitly enabled for the team.",
+            "I recommend checking the 'Libraries' settings in your team dashboard to ensure "
+            "the Core UI file is toggled 'on' for all members. If it's already on, have "
+            "them check if they've accidentally filtered their Assets panel to 'Current file' only.",
+            "If those steps don’t clear it up, share the link to the library file and I’ll "
+            "check the publishing logs to see if there was a propagation error.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Most likely permission propagation failure given partial impact "
-                "across users (not a full outage)."
+                "Library disabled at the team level or user-level asset filtering."
             ),
             "checking": (
-                "Library ID + affected user IDs. "
-                "Permissions table vs UI state. "
-                "Recent org-level changes (bulk adds, plan updates). "
-                "Any related incidents in the same timeframe."
+                "Team-wide library defaults. Verify if 'Core UI' is set to 'All files' "
+                "or if it needs to be manually enabled per-file."
             ),
             "escalation": (
-                "Escalate to engineering if users are correctly present in ACL but "
-                "access is denied — likely caching or auth inconsistency."
+                "Engineering if the library is enabled but metadata isn't "
+                "populating in the Assets panel for specific users (ACL sync issue)."
             ),
             "product_gap": (
-                "No validation step after bulk member adds to confirm ACL "
-                "propagation. Adding a post-action verification would prevent "
-                "partial access states."
+                "There's no visual indicator in 'Can View' mode that a library exists "
+                "but is disabled. Improving the search empty-state in the Assets panel "
+                "could guide users to Enable hidden libraries."
             ),
         },
     },
-    "Feature Issue": {
-        "label": "🔄  Feature Issue",
+    "Components & Syncing": {
+        "label": "🔄  Components & Syncing",
         "customer_message": (
-            "Something is really wrong with my syncing. I made a bunch of updates "
-            "to a component in the main file and my teammates are telling me they "
-            "still see the old version. I've published the changes, refreshed "
-            "multiple times, and even asked them to hard reload. It's been almost "
-            "a day and they're still not seeing the updates. We're on a deadline "
-            "and this is really stressful."
+            "I published an update to our button component (changed the 8px radius to 4px). "
+            "Most of the team sees the update, but in one specific file, the buttons still "
+            "have the old 8px radius. I've refreshed, but nothing is changing. Is it a bug?"
         ),
         "support_response": [
-            "I can see why this is stressful, especially with a deadline — "
-            "let's get this unblocked.",
-            "When published component changes don't show up for other editors, "
-            "it's usually one of two things: the update hasn't been applied in "
-            "their file yet, or the publish didn't fully propagate.",
-            "In the affected files, ask your teammates to open the Libraries panel "
-            "and check for an 'Update available' prompt. Even after a hard reload, "
-            "updates sometimes need to be accepted from within the file.",
-            "If there's no update prompt showing, that likely means the publish "
-            "didn't propagate correctly on our side. Please share the main file "
-            "link and one affected subscriber file so I can check the publish event "
-            "log and confirm the update registered properly.",
-            "I'll prioritize this given the deadline and follow up as soon as I've "
-            "confirmed what's happening.",
+            "When a published change doesn't reflect globally, it's usually because the "
+            "specific instance has a local 'override' taking precedence. If someone "
+            "manually adjusted the radius on that button before the library update, "
+            "Figma preserves that local change to avoid breaking your design.",
+            "You can test this by selecting the affected button and clicking 'Reset all "
+            "overrides' in the right-hand panel. If the radius jumps to 4px, we've "
+            "confirmed it was a local override blocking the update.",
+            "If resetting doesn't help, share the file link and I'll investigate if "
+            "there's a propagation delay with the library service.",
         ],
         "internal_notes": {
             "root_cause": (
-                "Most likely a publish propagation failure; secondary possibility "
-                "is cache invalidation delay."
+                "Local instance override blocking library style propagation."
             ),
             "checking": (
-                "Need the main file and one subscriber file to pull publish event "
-                "logs. Looking for the timestamp of the last publish event, whether "
-                "a version bump was registered, and whether subscriber files "
-                "received the update webhook. Will also check for any publish "
-                "service degradation in the past 48 hours."
+                "Selection state of the affected instance. 'Reset all overrides' "
+                "is the primary validation step here."
             ),
             "escalation": (
-                "Escalating to Tier 2 if the publish event log shows a successful "
-                "publish but subscriber files have no update record. That gap is "
-                "not resolvable at Tier 1. If it's a cache issue, Tier 2 can force "
-                "an invalidation. Marking as high priority due to active deadline."
+                "Engineering only if 'Reset all overrides' fails to pull the "
+                "latest library definition (potential cache invalidation failure)."
             ),
             "product_gap": (
-                "Library update prompts rely on polling rather than push "
-                "notification. Users have no visibility into whether a publish "
-                "succeeded or is propagating. A publish confirmation state with "
-                "a visible propagation status would reduce time-to-awareness of "
-                "failures like this one."
+                "Users don't have visibility into which properties are 'overridden' "
+                "vs 'inherited' without manual checking. A 'Conflict' indicator in "
+                "the Properties panel would help troubleshoot this instantly."
             ),
         },
     },
@@ -226,6 +188,12 @@ st.markdown(f"""
         <a href="https://www.linkedin.com/in/sefketnouri/" target="_blank">LinkedIn</a>
         <a href="https://github.com/sefket24" target="_blank">GitHub</a>
     </div>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="color: var(--text-secondary); font-size: 14px; margin-top: -20px; margin-bottom: 24px; line-height: 1.4;">
+    Simulated support scenarios showing how I investigate issues, identify root causes, and guide users to clear, confident resolutions.
 </div>
 """, unsafe_allow_html=True)
 
