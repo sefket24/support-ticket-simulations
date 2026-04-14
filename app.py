@@ -45,6 +45,33 @@ st.markdown("""
         opacity: 0.9;
     }
     
+    /* Fix Expanders (Internal Notes) */
+    [data-testid="stExpander"] {
+        background-color: var(--bg-card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        margin-top: 10px !important;
+    }
+    [data-testid="stExpander"] summary {
+        color: var(--text-primary) !important;
+        font-weight: 600 !important;
+    }
+    [data-testid="stExpander"] [data-testid="stVerticalBlock"] {
+        padding: 1rem !important;
+    }
+    [data-testid="stExpander"] p, [data-testid="stExpander"] span {
+        color: var(--text-primary) !important;
+    }
+
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background-color: var(--bg-main) !important;
+        border-right: 1px solid var(--border) !important;
+    }
+    [data-testid="stSidebar"] * {
+        color: var(--text-primary) !important;
+    }
+    
     /* Hide Streamlit components */
     #MainMenu, footer, header, [data-testid="stHeader"] { visibility: hidden; display: none; }
 </style>
@@ -60,18 +87,17 @@ TICKETS = {
             "on the 12th. I didn't add anyone new. Can you explain why we're being billed twice?"
         ),
         "support_response": [
-            "It looks like that second charge was triggered by a seat upgrade mid-cycle. "
-            "In most cases, adding a new editor (or a viewer taking an action that requires "
-            "a full seat) generates a pro-rated invoice for the rest of the billing period.",
+            "This usually comes down to a seat upgrade mid-cycle. In Figma, adding a new "
+            "editor—or even a viewer taking an action that requires a full seat—generates "
+            "a pro-rated invoice for the rest of the billing period.",
             "I'll check the 'Members' tab in your team settings to see exactly which user "
-            "was upgraded and when. If this was accidental—like a viewer being invited "
-            "to a file with 'Can Edit' permissions—we can revert the seat and I’ll help "
-            "with a credit for the unused time.",
-            "Moving forward, you might want to set your default seat type to 'Viewer-restricted' "
-            "for new invites. It's a safer way to prevent these surprise upgrades while "
-            "still letting everyone jump into files to see what's happening.",
-            "That should clear things up, but if those members definitely shouldn't be "
-            "editors, let me know and I'll jump back in.",
+            "was upgraded. If this was accidental, like someone being invited to a file "
+            "with 'Can Edit' instead of 'Can View,' I can revert the seat and help with "
+            "a credit for the unused time.",
+            "Moving forward, it might be worth setting your default seat type to 'Viewer-restricted' "
+            "for new invites. It prevents these surprise upgrades while still letting "
+            "everyone jump into files as needed.",
+            "I should have an answer for you in just a few minutes once I’ve audited the logs.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -99,16 +125,16 @@ TICKETS = {
             "'Can View' access. What are we missing? They used to see it fine last week."
         ),
         "support_response": [
-            "If your developers can see project files but not the library itself, it's "
-            "usually because library visibility is managed separately from file permissions. "
-            "In most cases, even if they can 'View' the file, it won't appear in their "
-            "Assets panel unless it's explicitly enabled for the team.",
-            "Start by checking the 'Libraries' settings in your team dashboard to ensure "
-            "the Core UI file is toggled 'on' for everyone. If it's already on, have "
-            "them check if they've accidentally filtered their Assets panel to 'Current file' only.",
-            "That should get the library surfacing for them, but if it's still missing "
-            "after that, feel free to share a screenshot of their panel and I can take "
-            "a closer look.",
+            "If they can see project files but not the library itself, it's usually "
+            "because library visibility is managed separately from file permissions. "
+            "In most cases, even with 'View' access, it won't appear in the Assets panel "
+            "unless it's explicitly enabled for the team.",
+            "Start by checking the 'Libraries' dashboard to ensure Core UI is toggled "
+            "to 'on' for everyone. If that’s already enabled, it’s worth having them "
+            "verify they haven't accidentally filtered their Assets panel to 'Current file' only.",
+            "If that settings check doesn't clear it up, I can loop in our engineers "
+            "directly to track down why the library metadata isn't surfacing for your team.",
+            "Let me know what you find on that libraries toggle.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -137,19 +163,18 @@ TICKETS = {
             "have the old 8px radius. I've refreshed, but nothing is changing. Is it a bug?"
         ),
         "support_response": [
-            "When a published change doesn't reflect globally, it's usually because the "
-            "specific instance has a local 'override' taking precedence. It looks like "
-            "someone might have manually adjusted the radius on that button before the "
-            "library update, and Figma tries to preserve those local changes to avoid "
-            "breaking your design.",
-            "One thing to check is selecting the affected button and clicking 'Reset all "
-            "overrides' in the right-hand panel. If the radius jumps to 4px, we've "
-            "confirmed it was a local override blocking the update.",
-            "If you’re seeing this a lot, it might be worth using 'Variants' for these "
-            "different states. It makes it harder for local overrides to accidentally "
-            "stick around when the main component changes.",
-            "That should resolve the sync issue, but if resetting doesn't help, "
-            "share the file link and I'll investigate if there's a propagation delay on our end.",
+            "This usually happens when a specific instance has a local 'override' "
+            "taking precedence. If someone manually adjusted the radius before the "
+            "update was published, Figma tries to preserve that local change so we "
+            "don't accidentally break your layout.",
+            "One thing to try is selecting that button and clicking 'Reset all overrides' "
+            "in the right-hand panel. If the radius jumps to 4px, we’ve confirmed it was "
+            "a local override blocking the sync.",
+            "If you’re seeing this frequently, it might be worth using 'Variants' for "
+            "these button states. It makes it much harder for local overrides to stick "
+            "around when you update the main library components.",
+            "If resetting those overrides doesn't fix it, feel free to share the link "
+            "to the file and I can investigate if there is a propagation delay on the service side.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -178,18 +203,16 @@ TICKETS = {
             "for everyone. Is this something on our end? We have a deadline in an hour."
         ),
         "support_response": [
-            "I can see how frustrating this is, especially with a deadline around the "
-            "corner. I'm seeing similar reports from other teams right now, which "
-            "suggests this isn't isolated to your account and is likely a broader "
-            "issue on our end.",
-            "Our engineering team is already investigating, but in the meantime, it's "
+            "I'm seeing similar reports on our side, so this doesn't look specific "
+            "to your team or machine. Given this is affecting everyone right now, "
+            "I'm treating this as high priority and tracking the fix minute-by-minute.",
+            "Our engineering team is already on it, but while we wait for a fix, it's "
             "worth checking if you can access files through the Desktop App or a "
-            "mobile hotspot, as that sometimes bypasses localized connection hiccups.",
-            "I’ve escalated your report to our priority queue so I can keep you updated "
-            "as soon as we have more definitive information on a fix. In most cases, "
-            "these connection issues are resolved quickly once the root cause is identified.",
-            "I’ll keep a close eye on this and share updates the moment I have them. "
-            "If anything changes on your end, feel free to share and I can take a closer look.",
+            "mobile hotspot, as that can sometimes bypass localized connection hiccups.",
+            "I've also looped in our technical leads so I can keep you updated the "
+            "second I have a firm timeline for a resolution. We’re working to get "
+            "you back into your files as fast as possible.",
+            "I'll keep a close eye on this—if anything changes on your end, let me know.",
         ],
         "internal_notes": {
             "root_cause": (
