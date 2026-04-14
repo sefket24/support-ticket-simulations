@@ -61,14 +61,17 @@ TICKETS = {
         ),
         "support_response": [
             "It looks like that second charge was triggered by a seat upgrade mid-cycle. "
-            "In Figma, adding a new editor (or a viewer taking an action that requires "
-            "a full seat) generates a pro-rated invoice for the remainder of the billing period.",
+            "In most cases, adding a new editor (or a viewer taking an action that requires "
+            "a full seat) generates a pro-rated invoice for the rest of the billing period.",
             "I'll check the 'Members' tab in your team settings to see exactly which user "
-            "was upgraded and when. If this upgrade was accidental—like a viewer being invited "
+            "was upgraded and when. If this was accidental—like a viewer being invited "
             "to a file with 'Can Edit' permissions—we can revert the seat and I’ll help "
-            "with a credit for the unutilized time.",
-            "If that user definitely needs edit access, this invoice covers them until your "
-            "next regular renewal date.",
+            "with a credit for the unused time.",
+            "Moving forward, you might want to set your default seat type to 'Viewer-restricted' "
+            "for new invites. It's a safer way to prevent these surprise upgrades while "
+            "still letting everyone jump into files to see what's happening.",
+            "That should clear things up, but if those members definitely shouldn't be "
+            "editors, let me know and I'll jump back in.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -96,15 +99,16 @@ TICKETS = {
             "'Can View' access. What are we missing? They used to see it fine last week."
         ),
         "support_response": [
-            "If your developers can see the project files but not the library itself, "
-            "it’s likely because library visibility is managed separately from file "
-            "permissions. Even if they can 'View' the file, it won't appear in their "
+            "If your developers can see project files but not the library itself, it's "
+            "usually because library visibility is managed separately from file permissions. "
+            "In most cases, even if they can 'View' the file, it won't appear in their "
             "Assets panel unless it's explicitly enabled for the team.",
-            "I recommend checking the 'Libraries' settings in your team dashboard to ensure "
-            "the Core UI file is toggled 'on' for all members. If it's already on, have "
+            "Start by checking the 'Libraries' settings in your team dashboard to ensure "
+            "the Core UI file is toggled 'on' for everyone. If it's already on, have "
             "them check if they've accidentally filtered their Assets panel to 'Current file' only.",
-            "If those steps don’t clear it up, share the link to the library file and I’ll "
-            "check the publishing logs to see if there was a propagation error.",
+            "That should get the library surfacing for them, but if it's still missing "
+            "after that, feel free to share a screenshot of their panel and I can take "
+            "a closer look.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -134,14 +138,18 @@ TICKETS = {
         ),
         "support_response": [
             "When a published change doesn't reflect globally, it's usually because the "
-            "specific instance has a local 'override' taking precedence. If someone "
-            "manually adjusted the radius on that button before the library update, "
-            "Figma preserves that local change to avoid breaking your design.",
-            "You can test this by selecting the affected button and clicking 'Reset all "
+            "specific instance has a local 'override' taking precedence. It looks like "
+            "someone might have manually adjusted the radius on that button before the "
+            "library update, and Figma tries to preserve those local changes to avoid "
+            "breaking your design.",
+            "One thing to check is selecting the affected button and clicking 'Reset all "
             "overrides' in the right-hand panel. If the radius jumps to 4px, we've "
             "confirmed it was a local override blocking the update.",
-            "If resetting doesn't help, share the file link and I'll investigate if "
-            "there's a propagation delay with the library service.",
+            "If you’re seeing this a lot, it might be worth using 'Variants' for these "
+            "different states. It makes it harder for local overrides to accidentally "
+            "stick around when the main component changes.",
+            "That should resolve the sync issue, but if resetting doesn't help, "
+            "share the file link and I'll investigate if there's a propagation delay on our end.",
         ],
         "internal_notes": {
             "root_cause": (
@@ -159,6 +167,46 @@ TICKETS = {
                 "Users don't have visibility into which properties are 'overridden' "
                 "vs 'inherited' without manual checking. A 'Conflict' indicator in "
                 "the Properties panel would help troubleshoot this instantly."
+            ),
+        },
+    },
+    "System Outage": {
+        "label": "🚨  System Outage (Escalation)",
+        "customer_message": (
+            "None of our team can open files right now. It just keeps loading and then "
+            "gives a connection error. We’ve tried different browsers and it’s the same "
+            "for everyone. Is this something on our end? We have a deadline in an hour."
+        ),
+        "support_response": [
+            "I can see how frustrating this is, especially with a deadline around the "
+            "corner. I'm seeing similar reports from other teams right now, which "
+            "suggests this isn't isolated to your account and is likely a broader "
+            "issue on our end.",
+            "Our engineering team is already investigating, but in the meantime, it's "
+            "worth checking if you can access files through the Desktop App or a "
+            "mobile hotspot, as that sometimes bypasses localized connection hiccups.",
+            "I’ve escalated your report to our priority queue so I can keep you updated "
+            "as soon as we have more definitive information on a fix. In most cases, "
+            "these connection issues are resolved quickly once the root cause is identified.",
+            "I’ll keep a close eye on this and share updates the moment I have them. "
+            "If anything changes on your end, feel free to share and I can take a closer look.",
+        ],
+        "internal_notes": {
+            "root_cause": (
+                "Unconfirmed. Likely a CDN or API service degradation."
+            ),
+            "checking": (
+                "Engineering incident logs, status page updates, and error rate "
+                "metrics. Investigating potential regional outages."
+            ),
+            "escalation": (
+                "High. Active engineering investigation in progress. Escalated to "
+                "Tier 2 for immediate user outreach once resolved."
+            ),
+            "product_gap": (
+                "In-app status indicators are currently too subtle during partial "
+                "outages. Improving global incident notifications would reduce "
+                "support volume and user anxiety during these events."
             ),
         },
     },
