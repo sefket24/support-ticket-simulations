@@ -284,6 +284,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("Support Ticket Simulations")
+
+st.markdown(
+    "Built to simulate real support scenarios—understanding user issues, identifying patterns, and resolving problems while surfacing insights that inform product decisions."
+)
+
+st.subheader("Example Workflow")
+
+st.markdown(
+    "Incoming ticket → understand user issue → identify pattern → resolve or escalate\n\n"
+    "**Example:** User unable to export design\n"
+    "→ Identify as export limitation or bug\n"
+    "→ Check for known issues or constraints\n"
+    "→ Provide workaround or escalate with clear reproduction steps"
+)
+
 st.caption(
     "A portfolio artifact showing how a support specialist works through "
     "customer issues end-to-end."
