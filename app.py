@@ -301,8 +301,8 @@ st.markdown(
 )
 
 st.caption(
-    "A portfolio artifact showing how a support specialist works through "
-    "customer issues end-to-end."
+    "A portfolio artifact showing how a product support specialist works through "
+    "customer issues end-to-end, from user problem to product insight."
 )
 
 st.divider()
