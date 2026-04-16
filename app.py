@@ -296,7 +296,8 @@ st.markdown(
     "**Example:** User unable to export design\n"
     "→ Identify as export limitation or bug\n"
     "→ Check for known issues or constraints\n"
-    "→ Provide workaround or escalate with clear reproduction steps"
+    "→ Provide workaround or escalate with clear reproduction steps\n"
+    "→ Highlight potential product gap or UX confusion"
 )
 
 st.caption(
